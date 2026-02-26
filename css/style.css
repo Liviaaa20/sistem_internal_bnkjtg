@@ -1,0 +1,53 @@
+/* Container Utama Brosur */
+#brosurArea {
+    width: 794px; /* Lebar standar A4 */
+    height: 1120px; /* Tinggi standar A4 - dikunci agar tidak nambah halaman */
+    margin: 0 auto;
+    padding: 2rem !important; /* Kurangi padding agar lebih compact */
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Paksa konten mengisi ruang secara proporsional */
+    box-sizing: border-box;
+}
+
+/* Perkecil teks tabel agar barisnya lebih rapat */
+#tabelHasil td {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+    font-size: 0.75rem; /* Perkecil sedikit dari sebelumnya */
+}
+
+/* Header tabel juga dibuat lebih rapat */
+thead th {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+}
+
+/* Hilangkan margin berlebih pada elemen bawah */
+.mt-12 { margin-top: 1.5rem !important; }
+.mt-10 { margin-top: 1rem !important; }
+/* CSS Khusus untuk Tampilan PDF */
+    .pdf-mode {
+        width: 794px !important; /* Lebar A4 */
+        height: 1122px !important; /* Tinggi A4 */
+        padding: 40px !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+    }
+
+    .pdf-mode table {
+        width: 100% !important;
+        table-layout: fixed !important; /* Paksa kolom konsisten */
+    }
+
+    .pdf-mode th, .pdf-mode td {
+        font-size: 11px !important; /* Ukuran font stabil */
+        padding: 8px 4px !important;
+    }
+
+    /* Hilangkan animasi saat export agar tidak nge-glitch */
+    .pdf-mode * {
+        animation: none !important;
+        transition: none !important;
+    }
