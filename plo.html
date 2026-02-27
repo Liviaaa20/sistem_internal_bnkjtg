@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Simulasi PLO - Bank Jateng</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .btn-transition { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .mobile-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        @media print { .no-print { display: none; } }
+        
+        /* Animasi Pop Up */
+        .modal-active { display: flex !important; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="bg-[#F8FAFC] text-slate-900 antialiased">
+
+<nav class="no-print sticky top-0 z-50 w-full border-b border-slate-200 nav-blur">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3 md:gap-4">
+            <img src="assets/logo.png" class="h-8 md:h-10" alt="Logo Bank Jateng">
+            <div class="flex flex-col border-l border-slate-200 pl-3 md:pl-4">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-0.5">Portal Internal</p>
+                <p class="text-[11px] md:text-xs font-extrabold text-blue-800 leading-none">KCP SATRIOWIBOWO</p>
+            </div>
+        </div>
+<div class="flex items-center gap-1">
+    <a href="index.html" class="px-3 py-2 text-xs font-bold text-slate-500 hover:text-blue-700 hover:bg-slate-50 rounded-lg btn-transition flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span class="hidden sm:inline">DEPOSITO</span>
+    </a>
+
+    <a href="kpr.html" class="px-3 py-2 text-xs font-bold text-slate-500 hover:text-blue-700 hover:bg-slate-50 rounded-lg btn-transition flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </svg>
+    <span class="hidden sm:inline">KPR</span>
+            </a>
+
+    <a href="plo.html" class="px-3 py-2 text-xs font-bold text-blue-700 bg-blue-50 rounded-lg btn-transition flex items-center gap-2 border border-blue-100/50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span class="hidden sm:inline">PLO</span>
+    </a>
+</div>
+    </div>
+</nav>
+
+<div class="max-w-5xl mx-auto py-6 md:py-10 px-4">
+<div class="no-print bg-white p-6 md:p-8 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 mb-8 relative overflow-hidden">
+    <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-50"></div>
+    
+    <div class="relative z-10 flex flex-col gap-8">
+        <div class="w-full">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <label class="flex items-center gap-2 text-[11px] font-extrabold text-slate-500 uppercase tracking-widest">
+                    <span class="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse"></span>
+                    Limit Pinjaman (Plafond)
+                </label>
+                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">Maks. Rp 1.5M</span>
+            </div>
+            
+            <div class="relative group">
+                <div class="absolute left-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none">
+                    <span class="font-extrabold text-blue-900/20 text-lg">Rp</span>
+                    <div class="w-[1px] h-6 bg-slate-200 group-focus-within:bg-blue-300 transition-colors"></div>
+                </div>
+                
+                <input type="text" id="pinjaman" 
+                    class="w-full pl-16 pr-6 py-5 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:bg-white focus:border-blue-600 focus:ring-[6px] focus:ring-blue-50 outline-none btn-transition text-2xl font-black text-slate-800 placeholder:text-slate-300" 
+                    placeholder="15.000.000">
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-center gap-4">
+            <button onclick="hitungKPR()" 
+                class="w-full md:w-auto flex-none bg-blue-700 hover:bg-blue-800 text-white text-sm font-black py-4 px-10 rounded-2xl btn-transition transform active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-blue-200 group">
+                <span>HITUNG SIMULASI</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </button>
+
+            <div class="grid grid-cols-2 sm:flex items-center gap-2 w-full md:w-auto">
+                <button onclick="openFilter()" 
+                    class="flex items-center justify-center gap-2 px-4 py-4 bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 rounded-2xl btn-transition text-[11px] font-bold uppercase tracking-tight">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Setup
+                </button>
+                
+                <button onclick="openSyaratModal()" 
+                    class="flex items-center justify-center gap-2 px-4 py-4 bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 rounded-2xl btn-transition text-[11px] font-bold uppercase tracking-tight">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Syarat
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2 w-full md:ml-auto md:w-auto border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-6">
+                <button onclick="downloadPDF()" 
+                    class="flex-1 md:flex-none bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-extrabold py-4 px-6 rounded-2xl btn-transition flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    PDF
+                </button>
+                
+                <button onclick="openContactModal()" 
+                    class="p-4 bg-slate-900 text-white rounded-2xl hover:bg-slate-800 btn-transition shadow-lg shadow-slate-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="hasilSectionKPR" class="hidden animate-in fade-in duration-700">
+        <div id="brosurArea" class="bg-white p-6 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-blue-50 rounded-full -mr-16 -mt-16 z-0"></div>
+
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-slate-100 pb-8">
+                <div class="flex items-center gap-4">
+                    <div class="p-2 bg-white shadow-sm rounded-xl border border-slate-50">
+                        <img src="assets/logo.png" class="h-10 md:h-12" alt="Logo">
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-extrabold tracking-tighter text-blue-900 leading-none">BANK JATENG</h1>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase mt-1">KCP Satriowibowo</p>
+                    </div>
+                </div>
+                <div class="md:text-right">
+                    <span class="bg-blue-900 text-white px-3 py-1 rounded-full text-[8px] md:text-[9px] font-black tracking-widest uppercase mb-1 inline-block">Mortgage Simulation</span>
+                    <h2 class="text-lg md:text-xl font-bold text-slate-800 uppercase">Simulasi PLO</h2>
+                    <p id="metodeLabel" class="text-[10px] md:text-[11px] font-medium text-slate-400 uppercase">Metode Anuitas - Bunga 8%</p>
+                </div>
+            </div>
+
+            <div class="relative z-10 mb-8">
+                <div class="mobile-scroll rounded-xl border border-slate-200 shadow-sm">
+                    <table class="w-full text-left min-w-[600px] md:min-w-full">
+                        <thead>
+                            <tr id="headerTenor" class="bg-slate-900 text-white text-[10px] uppercase tracking-wider">
+                                <th class="py-4 px-4 font-bold">Plafond</th>
+                                </tr>
+                        </thead>
+                        <tbody id="tabelHasilKPR" class="text-xs md:text-sm font-semibold text-slate-700">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 mt-6 pt-6 border-t border-slate-100">
+                <div class="md:col-span-7 space-y-3">
+                    <h4 class="text-[10px] font-black text-blue-900 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <span class="w-1 h-3 bg-blue-700 rounded-full"></span> Catatan Simulasi
+                    </h4>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-[10px] md:text-[11px] text-slate-600">
+                        <li>• Angsuran belum termasuk biaya asuransi & notaris</li>
+                        <li>• Suku bunga dapat berubah sewaktu-waktu</li>
+                        <li>• Perhitungan bersifat estimasi</li>
+                    </ul>
+                </div>
+                <div class="col-span-5 bg-slate-50 rounded-2xl p-5 border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p id="cpJabatan" class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Relationship Manager</p>
+                        <p id="cpNama" class="text-lg font-extrabold text-blue-900 uppercase">MAYA</p>
+                        <p id="cpPhone" class="text-[11px] font-bold text-blue-600 uppercase">0812 8035 0399</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="filterModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
+        <h3 class="text-lg font-extrabold mb-6 text-blue-900">Pengaturan PLO</h3>
+        <div class="space-y-5">
+            <div>
+                <label class="text-[10px] font-bold uppercase text-slate-400">Bunga (% per tahun)</label>
+                <input type="number" id="filterBunga" value="8" step="0.01" class="w-full mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 outline-none focus:border-blue-500 font-bold">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold uppercase text-slate-400">Metode Perhitungan</label>
+                <select id="filterMetode" class="w-full mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 outline-none focus:border-blue-500 font-bold">
+                    <option value="anuitas">Anuitas (Efektif)</option>
+                    <option value="flat">Flat</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-3">
+                <input type="checkbox" id="filterToggle" class="w-4 h-4 rounded text-blue-600">
+                <label for="filterToggle" class="text-sm font-semibold text-slate-600">Tampilkan tenor 1–4 tahun</label>
+            </div>
+        </div>
+        <div class="flex justify-end gap-3 mt-8">
+            <button onclick="closeFilter()" class="px-6 py-2.5 rounded-xl bg-blue-700 text-white font-bold btn-transition">Simpan Perubahan</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/plo/plo.js"></script>
+ <div id="syaratModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-[60] p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden transform transition-all">
+        <div class="bg-blue-700 p-6 text-white relative">
+            <h3 class="text-xl font-extrabold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Persyaratan Kredit
+            </h3>
+            <p class="text-blue-100 text-xs mt-1 font-medium">Lengkapi dokumen berikut untuk pengajuan KPR</p>
+            <button onclick="closeSyaratModal()" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l18 18" />
+                </svg>
+            </button>
+        </div>
+        
+        <div class="p-6 max-h-[70vh] overflow-y-auto bg-slate-50">
+            <div class="space-y-3">
+                <div class="flex gap-4 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-none w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">Mengisi Aplikasi Permohonan Kredit</p>
+                </div>
+                <div class="flex gap-4 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-none w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">Fotocopy KTP dan Pas Foto Suami-Istri</p>
+                </div>
+                <div class="flex gap-4 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-none w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">Fotocopy KK & Surat Nikah</p>
+                </div>
+                <div class="flex gap-4 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-none w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm">4</div>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">Asli dan Copy SK CPNS, PNS, Terakhir, Karpeg dan Taspen <span class="block text-[10px] text-blue-500 font-bold uppercase">(Khusus PNS Aktif)</span></p>
+                </div>
+                <div class="flex gap-4 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-none w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm">5</div>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">Asli dan Copy SKEP 1 dan terakhir <span class="block text-[10px] text-blue-500 font-bold uppercase">(Khusus Polri)</span></p>
+                </div>
+                <div class="flex gap-4 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-none w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm">6</div>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">Asli dan Copy Krip dan SK Pensiun <span class="block text-[10px] text-blue-500 font-bold uppercase">(Khusus Pensiunan)</span></p>
+                </div>
+                <div class="flex gap-4 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-none w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm">7</div>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">Daftar Rincian Gaji Terakhir</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                <p class="text-[11px] text-amber-800 font-bold italic leading-tight">* Syarat dan Ketentuan Lainnya Berlaku sesuai kebijakan Bank Jateng yang berlaku saat pengajuan.</p>
+            </div>
+        </div>
+
+        <div class="p-6 bg-white border-t border-slate-100 flex justify-end">
+            <button onclick="closeSyaratModal()" class="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl btn-transition shadow-lg shadow-blue-100">
+                SAYA MENGERTI
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    // Fungsi Modal Syarat
+    function openSyaratModal() {
+        document.getElementById('syaratModal').classList.add('modal-active');
+        document.body.style.overflow = 'hidden'; // Lock scroll
+    }
+
+    function closeSyaratModal() {
+        document.getElementById('syaratModal').classList.remove('modal-active');
+        document.body.style.overflow = 'auto'; // Unlock scroll
+    }
+
+    // Menutup modal jika klik di luar area modal
+    window.onclick = function(event) {
+        const modal = document.getElementById('syaratModal');
+        if (event.target == modal) {
+            closeSyaratModal();
+        }
+    }
+
+    // Fungsi placeholder (asumsi fungsi yang sudah ada di kpr.js)
+    function openFilter() { document.getElementById('filterModal').style.display = 'flex'; }
+    function closeFilter() { document.getElementById('filterModal').style.display = 'none'; }
+</script>
+</body>
+</html>

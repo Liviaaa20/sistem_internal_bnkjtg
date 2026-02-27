@@ -27,7 +27,7 @@ const Toast = Swal.mixin({
 if (!nominalAwal || nominalAwal < 5000000) {
     Toast.fire({
       icon: 'warning',
-      title: 'Minimal nominal Rp 5.000.000',
+      title: 'Minimal Depostio Rp 5.000.000',
       background: '#fff',
       color: '#1e293b'
     });
